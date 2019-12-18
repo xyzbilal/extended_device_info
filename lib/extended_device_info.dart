@@ -34,9 +34,24 @@ class AndroidDeviceInfo {
     this.type,
     this.isPhysicalDevice,
     this.androidId,
+    this.dns1,
+    this.dns2,
+    this.gateway,
+    this.ipAddress,
+    this.serverIp,
+    this.subnet,
+    this.uniquePsuedoId,
   })  : supported32BitAbis = List<String>.unmodifiable(supported32BitAbis),
         supported64BitAbis = List<String>.unmodifiable(supported64BitAbis),
         supportedAbis = List<String>.unmodifiable(supportedAbis);
+
+  final String uniquePsuedoId;
+  final String dns1;
+  final String dns2;
+  final String gateway;
+  final String ipAddress;
+  final String subnet;
+  final String serverIp;
 
   /// Android operating system version values derived from `android.os.Build.VERSION`.
   final AndroidBuildVersion version;

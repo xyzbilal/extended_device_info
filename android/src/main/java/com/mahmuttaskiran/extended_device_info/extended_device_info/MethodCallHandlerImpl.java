@@ -6,13 +6,22 @@ package com.mahmuttaskiran.extended_device_info.extended_device_info;
 
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
+import android.content.Context;
+import android.net.DhcpInfo;
+import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
-import io.flutter.plugin.common.MethodCall;
-import io.flutter.plugin.common.MethodChannel;
+import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
+import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.MethodChannel;
 
 /**
  * The implementation of {@link MethodChannel.MethodCallHandler} for the plugin. Responsible for
@@ -21,19 +30,23 @@ import java.util.Map;
 class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
 
   private ContentResolver contentResolver;
+  private Context context;
 
   /** Substitute for missing values. */
   private static final String[] EMPTY_STRING_LIST = new String[] {};
 
   /** Constructs DeviceInfo. The {@code contentResolver} must not be null. */
-  MethodCallHandlerImpl(ContentResolver contentResolver) {
+  MethodCallHandlerImpl(ContentResolver contentResolver, Context context) {
     this.contentResolver = contentResolver;
+    this.context = context;
   }
 
   @Override
   public void onMethodCall(MethodCall call, MethodChannel.Result result) {
     if (call.method.equals("getAndroidDeviceInfo")) {
       Map<String, Object> build = new HashMap<>();
+      putDhcInfoTo(getDhcInfo(), build);
+      build.put("uniquePsuedoId", getUniquePsuedoID());
       build.put("board", Build.BOARD);
       build.put("bootloader", Build.BOOTLOADER);
       build.put("brand", Build.BRAND);
@@ -112,4 +125,13 @@ class MethodCallHandlerImpl implements MethodChannel.MethodCallHandler {
         || Build.PRODUCT.contains("emulator")
         || Build.PRODUCT.contains("simulator");
   }
+
+ @SuppressLint("DefaultLocale")
+ public String intToIp(int ip) {
+  return String.format("%d.%d.%d.%d",
+   (ip & 0xff),
+   (ip >> 8 & 0xff),
+   (ip >> 16 & 0xff),
+   (ip >> 24 & 0xff));
+ }
 }

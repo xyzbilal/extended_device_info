@@ -137,7 +137,20 @@ class AndroidDeviceInfo {
       type: map['type'],
       isPhysicalDevice: map['isPhysicalDevice'],
       androidId: map['androidId'],
+      dns1: map['dns1'],
+      dns2: map['dns2'],
+      gateway: map['gateway'],
+      ipAddress: map['ipAddress'],
+      subnet: map['subnet'],
+      serverIp: map['serverIp'],
+      uniquePsuedoId: map['uniquePsuedoId'],
     );
+  }
+
+  @override
+  String toString() {
+    return 'AndroidInfo(dns1: $dns1, dns2: $dns2, gateway: $gateway, ' +
+        'uniquePsuedoId: $uniquePsuedoId, subnet: $subnet,)';
   }
 
   /// Deserializes message as List<String>

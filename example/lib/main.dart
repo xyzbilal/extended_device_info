@@ -35,7 +35,7 @@ class _MyAppState extends State<MyApp> {
     if (!mounted) return;
 
     setState(() {
-      _platformVersion = platformVersion.androidId;
+      _platformVersion = platformVersion.toString();
     });
   }
 

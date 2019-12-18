@@ -1,6 +1,7 @@
 package com.mahmuttaskiran.extended_device_info.extended_device_info;
 
 import android.content.ContentResolver;
+import android.content.Context;
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -18,18 +19,19 @@ public class ExtendedDeviceInfoPlugin implements FlutterPlugin {
  public void onAttachedToEngine(FlutterPlugin.FlutterPluginBinding binding) {
   setupMethodChannel(
    binding.getFlutterEngine().getDartExecutor(),
-   binding.getApplicationContext().getContentResolver());
+   binding.getApplicationContext());
  }
 
- private void setupMethodChannel(BinaryMessenger messenger, ContentResolver contentResolver) {
+ private void setupMethodChannel(BinaryMessenger messenger, Context context) {
+  ContentResolver contentResolver = context.getContentResolver();
   channel = new MethodChannel(messenger, "plugins.flutter.io/device_info");
-  final MethodCallHandlerImpl handler = new MethodCallHandlerImpl(contentResolver);
+  final MethodCallHandlerImpl handler = new MethodCallHandlerImpl(contentResolver, context);
   channel.setMethodCallHandler(handler);
  }
 
   public static void registerWith(Registrar registrar) {
    ExtendedDeviceInfoPlugin plugin = new ExtendedDeviceInfoPlugin();
-   plugin.setupMethodChannel(registrar.messenger(), registrar.context().getContentResolver());
+   plugin.setupMethodChannel(registrar.messenger(), registrar.context());
   }
 
 

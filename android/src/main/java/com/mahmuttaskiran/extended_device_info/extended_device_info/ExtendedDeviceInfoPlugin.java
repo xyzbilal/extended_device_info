@@ -3,7 +3,6 @@ package com.mahmuttaskiran.extended_device_info.extended_device_info;
 import android.content.ContentResolver;
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
@@ -42,7 +41,7 @@ public class ExtendedDeviceInfoPlugin implements FlutterPlugin {
 
 
   @Override
-  public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+  public void onDetachedFromEngine(FlutterPluginBinding binding) {
    tearDownChannel();
   }
 }

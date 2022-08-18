@@ -6,11 +6,14 @@ class DeviceInfoPlugin {
   DeviceInfoPlugin();
   static const MethodChannel channel =
       MethodChannel('plugins.flutter.io/device_info');
-  AndroidDeviceInfo _cachedAndroidDeviceInfo;
-  Future<AndroidDeviceInfo> get androidInfo async =>
-      _cachedAndroidDeviceInfo ??= AndroidDeviceInfo._fromMap(await channel
-          .invokeMapMethod<String, dynamic>('getAndroidDeviceInfo'));
-}
+
+  AndroidDeviceInfo? _cachedAndroidDeviceInfo;
+
+  Future<AndroidDeviceInfo>? get androidInfo async =>  
+    _cachedAndroidDeviceInfo ??= AndroidDeviceInfo._fromMap(await channel.invokeMapMethod<String, dynamic>('getAndroidDeviceInfo')??{});
+  
+  }
+      
 
 class AndroidDeviceInfo {
   AndroidDeviceInfo._({
@@ -27,12 +30,12 @@ class AndroidDeviceInfo {
     this.manufacturer,
     this.model,
     this.product,
-    List<String> supported32BitAbis,
-    List<String> supported64BitAbis,
-    List<String> supportedAbis,
+    List<String> supported32BitAbis=const[],
+    List<String> supported64BitAbis=const[],
+    List<String> supportedAbis=const[],
     this.tags,
     this.type,
-    this.isPhysicalDevice,
+    this.isPhysicalDevice=false,
     this.androidId,
     this.dns1,
     this.dns2,
@@ -45,52 +48,52 @@ class AndroidDeviceInfo {
         supported64BitAbis = List<String>.unmodifiable(supported64BitAbis),
         supportedAbis = List<String>.unmodifiable(supportedAbis);
 
-  final String uniquePsuedoId;
-  final String dns1;
-  final String dns2;
-  final String gateway;
-  final String ipAddress;
-  final String subnet;
-  final String serverIp;
+  final String? uniquePsuedoId;
+  final String? dns1;
+  final String? dns2;
+  final String? gateway;
+  final String? ipAddress;
+  final String? subnet;
+  final String? serverIp;
 
   /// Android operating system version values derived from `android.os.Build.VERSION`.
-  final AndroidBuildVersion version;
+  final AndroidBuildVersion? version;
 
   /// The name of the underlying board, like "goldfish".
-  final String board;
+  final String? board;
 
   /// The system bootloader version number.
-  final String bootloader;
+  final String? bootloader;
 
   /// The consumer-visible brand with which the product/hardware will be associated, if any.
-  final String brand;
+  final String? brand;
 
   /// The name of the industrial design.
-  final String device;
+  final String? device;
 
   /// A build ID string meant for displaying to the user.
-  final String display;
+  final String? display;
 
   /// A string that uniquely identifies this build.
-  final String fingerprint;
+  final String? fingerprint;
 
   /// The name of the hardware (from the kernel command line or /proc).
-  final String hardware;
+  final String? hardware;
 
   /// Hostname.
-  final String host;
+  final String? host;
 
   /// Either a changelist number, or a label like "M4-rc20".
-  final String id;
+  final String? id;
 
   /// The manufacturer of the product/hardware.
-  final String manufacturer;
+  final String? manufacturer;
 
   /// The end-user-visible name for the end product.
-  final String model;
+  final String? model;
 
   /// The name of the overall product.
-  final String product;
+  final String? product;
 
   /// An ordered list of 32 bit ABIs supported by this device.
   final List<String> supported32BitAbis;
@@ -102,16 +105,16 @@ class AndroidDeviceInfo {
   final List<String> supportedAbis;
 
   /// Comma-separated tags describing the build, like "unsigned,debug".
-  final String tags;
+  final String? tags;
 
   /// The type of build, like "user" or "eng".
-  final String type;
+  final String? type;
 
   /// `false` if the application is running in an emulator, `true` otherwise.
   final bool isPhysicalDevice;
 
   /// The Android hardware device ID that is unique between the device + user and app signing.
-  final String androidId;
+  final String? androidId;
 
   /// Deserializes from the message received from [_kChannel].
   static AndroidDeviceInfo _fromMap(Map<String, dynamic> map) {
@@ -172,27 +175,27 @@ class AndroidBuildVersion {
   });
 
   /// The base OS build the product is based on.
-  final String baseOS;
+  final String? baseOS;
 
   /// The current development codename, or the string "REL" if this is a release build.
-  final String codename;
+  final String ?codename;
 
   /// The internal value used by the underlying source control to represent this build.
-  final String incremental;
+  final String? incremental;
 
   /// The developer preview revision of a prerelease SDK.
-  final int previewSdkInt;
+  final int? previewSdkInt;
 
   /// The user-visible version string.
-  final String release;
+  final String? release;
 
   /// The user-visible SDK version of the framework.
   ///
   /// Possible values are defined in: https://developer.android.com/reference/android/os/Build.VERSION_CODES.html
-  final int sdkInt;
+  final int? sdkInt;
 
   /// The user-visible security patch level.
-  final String securityPatch;
+  final String? securityPatch;
 
   /// Deserializes from the map message received from [_kChannel].
   static AndroidBuildVersion _fromMap(Map<String, dynamic> map) {
